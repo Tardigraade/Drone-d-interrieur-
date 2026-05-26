@@ -1,17 +1,19 @@
 # Untitled - By: yannfraise - Tue May 26 2026
+# Pseudo-code architectural
+import sensor, image, time, math
 
-import csi
-import time
+# Initialisation
+sensor.reset()
+sensor.set_pixformat(sensor.GRAYSCALE)
+sensor.set_framesize(sensor.B64X64) # ésolution carrée  pour l'optical flow
 
-csi0 = csi.CSI()
-csi0.reset()
-csi0.pixformat(csi.RGB565)
-csi0.framesize(csi.VGA)
-csi0.snapshot(time=2000)
-
+old_img = sensor.snapshot()
 clock = time.clock()
 
-while True:
+while(True):
     clock.tick()
-    img = csi0.snapshot()
+    img = sensor.snapshot()
+
+    # 1. Calcul du déplacement en pixels
+    displacement = img.find_displacement(old_img)
     print(clock.fps())

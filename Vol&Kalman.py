@@ -52,7 +52,23 @@ while(True):
     # Debug dans le terminal (à commenter en vol)
     print("Rad X: {:.4f}, Rad Y: {:.4f}, Qualité: {}, dt: {} us".format(delta_rad_x, delta_rad_y, quality, dt_us))
 
-    # --- PROCHAINE ÉTAPE : Empaquetage MAVLink ici ---
+
+
+    # 1. Trouver le centre géométrique de l'image (32, 32 pour du 64x64)
+    center_x = img.width() // 2
+    center_y = img.height() // 2
+
+    # 2. Facteur d'échelle visuel (Grossit la flèche X fois pour qu'elle soit visible)
+    vis_scale = 10
+
+    # 3. Calculer les coordonnées de la pointe de la flèche
+    # On utilise dx_pixels et dy_pixels que tu as déjà extraits
+    end_x = int(center_x + (dx_pixels * vis_scale))
+    end_y = int(center_y + (dy_pixels * vis_scale))
+
+    # 4. Dessiner la flèche sur l'image en direct
+    # color=255 correspond au blanc pur en niveaux de gris
+    img.draw_arrow(center_x, center_y, end_x, end_y, color=255, thickness=1)
 
     old_img = img.copy()
     print(clock.fps())

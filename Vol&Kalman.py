@@ -2,19 +2,18 @@
 
 import sensor, image, time, math
 
-# --- Constantes Optiques (à ajuster selon ta lentille exacte) ---
-# Valeurs approximatives pour une lentille standard OpenMV 2.8mm
-FOV_X_RAD = 1.23  # Champ de vision horizontal en radians
-FOV_Y_RAD = 0.97  # Champ de vision vertical en radians
 
-RES_X = 64.0      # Largeur de l'image
-RES_Y = 64.0      # Hauteur de l'image
 
-# Calcul du facteur d'échelle (Radians par pixel)
+FOV_X_RAD = 1.23
+FOV_Y_RAD = 0.97
+
+RES_X = 64.0
+RES_Y = 64.0
+
+# Radians par pixel
 RAD_PER_PIXEL_X = FOV_X_RAD / RES_X
 RAD_PER_PIXEL_Y = FOV_Y_RAD / RES_Y
 
-# --- Initialisation Capteur ---
 sensor.reset()
 sensor.set_pixformat(sensor.GRAYSCALE)
 sensor.set_framesize(sensor.B64X64)
@@ -37,16 +36,12 @@ while(True):
     dy_pixels = displacement.y_translation()
 
     # La méthode response() renvoie un float entre 0.0 et 1.0
-    # MAVLink attend un entier entre 0 et 255
     quality = math.floor(displacement.response() * 255)
 
     # 3. Conversion en Radians
-    # On inverse souvent les signes selon l'orientation de montage de la caméra
-    # par rapport au repère (Forward-Right-Down) du drone.
     delta_rad_x = dx_pixels * RAD_PER_PIXEL_X
     delta_rad_y = dy_pixels * RAD_PER_PIXEL_Y
 
-    # Temps d'intégration  (dt)
     dt_us = int(clock.avg() * 1000)
 
 
@@ -61,8 +56,7 @@ while(True):
     # Grossis
     vis_scale = 10
 
-    # 3. Calculer les coordonnées de la pointe de la flèche
-    # On utilise dx_pixels et dy_pixels déjà extraits
+    # 3. Coordonnes fleche
     end_x = int(center_x + (dx_pixels * vis_scale))
     end_y = int(center_y + (dy_pixels * vis_scale))
 

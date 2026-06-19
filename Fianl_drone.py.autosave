@@ -59,8 +59,8 @@ def send_optical_flow_packet(flow_x_pixels, flow_y_pixels, quality_float):
     time_usec = time.ticks_us()
     flow_comp_m_x = 0.0
     flow_comp_m_y = 0.0
-    ground_distance = 0.0          # ← remettre à ta vraie valeur (sonar/lidar)
-    flow_x = int(flow_x_pixels)    # déjà en 1/10 rad ? → adapter si besoin
+    ground_distance = 0.0          
+    flow_x = int(flow_x_pixels)    
     flow_y = int(flow_y_pixels)
     sensor_id = 0
     quality = max(0, min(255, int(quality_float * 255)))
